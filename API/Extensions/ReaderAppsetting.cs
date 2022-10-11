@@ -1,12 +1,11 @@
-﻿
-using API.Model;
+﻿using API.Model;
 using Confluent.Kafka;
 
-namespace API.ReaderAppset;
+namespace API.Extensions;
 
 public class ReaderAppsetting
 {
-   private KafkaConfigModel kafkaConfiguration = new KafkaConfigModel();
+    private KafkaConfigModel kafkaConfiguration = new KafkaConfigModel();
 
     public KafkaConfigModel GetProducerConfig()
     {
@@ -26,14 +25,14 @@ public class ReaderAppsetting
         var config = ReadAppSettings();
         Dictionary<string, string> GetConfig = config.GetSection("services:kafka:consumerConfig").Get<Dictionary<string, string>>();
         string baseDirectory = config.GetSection("services:kafka")["BaseDirectory"];
-        kafkaConfiguration.ConsumerConfig.BootstrapServers = String.Join(",", kafkaConfiguration.Brokers);
-        kafkaConfiguration.ConsumerConfig.SecurityProtocol = (Confluent.Kafka.SecurityProtocol?)Enum.Parse(typeof(Confluent.Kafka.SecurityProtocol), GetConfig["security.protocol"], true);
+        kafkaConfiguration.ConsumerConfig.BootstrapServers = string.Join(",", kafkaConfiguration.Brokers);
+        kafkaConfiguration.ConsumerConfig.SecurityProtocol = (SecurityProtocol?)Enum.Parse(typeof(SecurityProtocol), GetConfig["security.protocol"], true);
         kafkaConfiguration.ConsumerConfig.SslCaLocation = baseDirectory + GetConfig["ssl.ca.location"];
         kafkaConfiguration.ConsumerConfig.SslCertificateLocation = baseDirectory + GetConfig["ssl.certificate.location"];
         kafkaConfiguration.ConsumerConfig.SslKeyLocation = baseDirectory + GetConfig["ssl.key.location"];
         kafkaConfiguration.ConsumerConfig.SslKeyPassword = GetConfig["ssl.key.password"];
         kafkaConfiguration.ConsumerConfig.EnableAutoCommit = Convert.ToBoolean(GetConfig["EnableAutoCommit"]);
-        kafkaConfiguration.ConsumerConfig.AutoOffsetReset =(AutoOffsetReset)Enum.Parse(typeof(AutoOffsetReset), GetConfig["auto.offset.reset"], true);
+        kafkaConfiguration.ConsumerConfig.AutoOffsetReset = (AutoOffsetReset)Enum.Parse(typeof(AutoOffsetReset), GetConfig["auto.offset.reset"], true);
         kafkaConfiguration.ConsumerConfig.GroupId = GetConfig["GroupId"];
         return kafkaConfiguration;
     }
