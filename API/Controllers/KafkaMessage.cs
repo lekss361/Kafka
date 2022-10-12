@@ -28,15 +28,9 @@ public class KafkaMessage : ControllerBase
     }
 
     [HttpGet("GetMessages")]
-    public async Task<ActionResult<List<IConsumerContext>>> GetMessages( string topicName = "sample-topic")
+    public async Task<ActionResult<List<IConsumerContext>>> GetMessages( string topicName = "sample-topic", int printLastMessages= 5)
     {
-        var x = MassagesKafka.messagesContexts.Count();
-        int v= x-5;
-        if (v<0)
-        {
-            v = 0;
-        }
-        MassagesKafka.messagesContexts.RemoveRange(0,v);
+        MassagesKafka.PrintLastMessages(printLastMessages);
         return Ok(JsonConvert.SerializeObject(MassagesKafka.messagesContexts, Formatting.Indented));
         
 
