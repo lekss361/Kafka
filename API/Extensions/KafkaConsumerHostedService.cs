@@ -19,17 +19,9 @@ namespace API.Extensions
         {
             try
             {
-
                 _kafkaBus = _services.CreateKafkaBus();
 
                 await _kafkaBus.StartAsync(stoppingToken);
-
-                var sb = new StringBuilder("Consumers:");
-                foreach (var consumer in _kafkaBus.Consumers.All)
-                {
-                    sb.Append($"   [{consumer.Status}] ClusterName: {consumer.ClusterName}, ClientInstanceName: {consumer.ClientInstanceName}, GroupId: {consumer.GroupId}, Topics: [{string.Join(", ", consumer.Topics)}]");
-                }
-
             }
             catch (OperationCanceledException)
             {

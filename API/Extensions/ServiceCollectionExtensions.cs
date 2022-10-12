@@ -1,11 +1,11 @@
 ﻿
-using Ekassir.KafkaFlow.Extensions.Registration;
 using KafkaFlow;
 using KafkaFlow.Serializer;
 using KafkaFlow.Configuration;
 using KafkaFlow.TypedHandler;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using API.Serialize;
+using ProtoBuf.Meta;
 
 namespace API.Extensions;
 
@@ -14,10 +14,14 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddKafkaConsumerService(this IServiceCollection services) => services.AddHostedService<KafkaConsumerHostedService>();
 
+    public static IServiceCollection AddKafkaPublisher(this IServiceCollection services)
+        => services.AddSingleton<IKafkaMessagePublisher, KafkaMessagePublisher>();
+
     public static IServiceCollection AddKafkaServices(this IServiceCollection services)
     {
-        const string producerName = "PrintConsole";
+        const string producerName = "sample-topic";
         const string topicName = "sample-topic";
+        services.AddKafkaConsumerService();
 
         services.AddKafka(
             kafka => kafka
@@ -39,25 +43,27 @@ public static class ServiceCollectionExtensions
                             producerName,
                             producer => producer
                                 .DefaultTopic(topicName)
+
                                 .AddMiddlewares(m => m.AddSerializer<ProtobufNetSerializer>())
                         )
                         .AddConsumer(
                             consumer => consumer
                                 .Topic(topicName)
                                 .WithAutoOffsetReset(AutoOffsetReset.Earliest)
-                                .WithGroupId("sample-topic")
+                                .WithGroupId(topicName)
+                                .WithName(topicName)
                                 .WithBufferSize(100)
                                 .WithWorkersCount(20)
                                 .AddMiddlewares(
                                     middlewares => middlewares
                                         .AddSerializer<ProtobufNetSerializer>()
-                                        .AddTypedHandlers(h => h.AddHandler<PrintDebugHandler>())
+                                        .AddTypedHandlers(h => h.AddHandler<PrintDebugHandler>()
+                                        )
                                 )
                         )
                 )
         );
+        
         return services;
     }
-
-    
 }

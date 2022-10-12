@@ -23,7 +23,7 @@ public class ReaderAppsetting
     public KafkaConfigModel GetConsumerConfig()
     {
         var config = ReadAppSettings();
-        Dictionary<string, string> GetConfig = config.GetSection("services:kafka:consumerConfig").Get<Dictionary<string, string>>();
+        Dictionary<string, string> GetConfig = config.GetSection("services:kafka:ConsumerConfig").Get<Dictionary<string, string>>();
         string baseDirectory = config.GetSection("services:kafka")["BaseDirectory"];
         kafkaConfiguration.ConsumerConfig.BootstrapServers = string.Join(",", kafkaConfiguration.Brokers);
         kafkaConfiguration.ConsumerConfig.SecurityProtocol = (SecurityProtocol?)Enum.Parse(typeof(SecurityProtocol), GetConfig["security.protocol"], true);
