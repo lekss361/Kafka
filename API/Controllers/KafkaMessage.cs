@@ -12,7 +12,7 @@ public class KafkaMessage : ControllerBase
     [HttpPut("AddMessage")]
     public async Task<ActionResult> AddMessage([FromBody] string message, string topicName = "sample_topia")
     {
-        await new KafkaProducer().AddMessageProducer(topicName, new MessageModel { Data = message });
+        //await new KafkaProducer().AddMessageProducer(topicName, new MessageModel { Data = message });
         return Ok();    
         
     }

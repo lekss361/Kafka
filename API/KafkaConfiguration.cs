@@ -25,25 +25,7 @@ namespace Ekassir.KafkaFlow.Extensions.Registration
         private readonly ConcurrentDictionary<string, ProduceConfiguration> _producerByTopic = new();
 
         // ReSharper disable once InconsistentNaming
-        private static WildcardOptions CaseInsensitiveOpts =
-            WildcardOptions.IgnoreCase | WildcardOptions.CultureInvariant | WildcardOptions.Compiled;
 
-        public ProduceConfiguration GetProduceConfiguration(string topic)
-        {
-            return _producerByTopic.GetOrAdd(topic,
-                s =>
-                {
-                    var produce = Produce.FirstOrDefault(
-                        x => topic.IsWildcardMatch(x.Pattern, CaseInsensitiveOpts));
-                    if (produce != null)
-                    {
-                        return produce;
-                    }
-
-                    throw new InvalidOperationException(
-                        $"Produce configuration for `{topic}` not found");
-                });
-        }
     }
 
     public class ConsumerConfiguration

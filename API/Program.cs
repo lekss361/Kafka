@@ -1,4 +1,5 @@
 using API;
+using API.Extensions;
 using KafkaFlow.Configuration;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
@@ -10,10 +11,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-var topicOptions = new KafkaTopicOptions();
-builder.Configuration.Bind("services:kafka", topicOptions);
-var kafkaOptions = new ProducerOptions();
-builder.Configuration.Bind("services:kafka", kafkaOptions);
+builder.Services.AddKafkaServices();
+builder.Services.AddKafkaConsumerService();
 
 var app = builder.Build();
 

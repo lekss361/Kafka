@@ -1,14 +1,25 @@
 ﻿using API.Model;
 using Confluent.Kafka;
-using System.Text;
+using KafkaFlow;
+using KafkaFlow.Serializer;
 using System.Text.Json;
+using ProtoBuf;
 
 namespace API.Serialize;
 
-public static class CustomValueSerializer
+public class ProtobufNetSerializer : ISerializer
 {
-    public static byte[] Serialize(MessageModel data)
+    /// <inheritdoc/>
+    public Task SerializeAsync(object message, Stream output, ISerializerContext context)
     {
-        return Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data));
+       SerializeAsync(message,output,context);
+
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc/>
+    public Task<object> DeserializeAsync(Stream input, Type type, ISerializerContext context)
+    {
+        return Task.FromResult(DeserializeAsync(input, type, context).Result);
     }
 }

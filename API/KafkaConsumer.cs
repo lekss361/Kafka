@@ -19,7 +19,6 @@ public class KafkaConsumer<T>
         using (var consumer = new ConsumerBuilder<Ignore, T>(readerAppSetting.GetConsumerConfig().ConsumerConfig)
         .SetErrorHandler((_, e) => Console.WriteLine($"Error: {e.Reason}"))
         .SetStatisticsHandler((_, json) => Console.WriteLine($"Statistics: {json}"))
-        .SetValueDeserializer(deserializer: new CustomValueDeserializer<T>())
         .Build())
         {
             consumer.Subscribe(topicName);
