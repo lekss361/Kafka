@@ -1,4 +1,5 @@
-﻿using Confluent.Kafka;
+﻿
+using Confluent.Kafka;
 using KafkaFlow.Configuration;
 using Microsoft.Extensions.Configuration;
 
@@ -8,6 +9,9 @@ public class KafkaConfigModel
 {
     public string[] Brokers { get; set; } = Array.Empty<string>();
     public SecurityInformation SecurityInformation { get; set; } = new();
+    public  ProducerConfig ProducerConfig { get; set; } = new();
     public ConsumerConfig ConsumerConfig { get; set; } = new();
 }
+
+
 

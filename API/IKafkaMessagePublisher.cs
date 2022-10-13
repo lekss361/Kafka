@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
 
-namespace API.Extensions
+namespace API
 {
     public interface IKafkaMessagePublisher
     {

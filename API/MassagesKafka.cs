@@ -1,5 +1,6 @@
 ﻿using KafkaFlow;
 using Microsoft.AspNetCore.SignalR.Protocol;
+using System.Collections.Generic;
 
 namespace API
 {
@@ -7,11 +8,12 @@ namespace API
     {
         public static List<IConsumerContext> messagesContexts { get; set; } = new List<IConsumerContext>();
         
-        public static void PrintLastMessages(int  count)
+        public static List<IConsumerContext> PrintLastMessages(int  count)
         {
-            var x = messagesContexts.Count();
-            int v = (x - count) < 0 ? v = 0 : v = x - count;
-            MassagesKafka.messagesContexts.RemoveRange(0, v);
+            List < IConsumerContext > removeMessagesContexts = new List<IConsumerContext>(messagesContexts);
+            int v = (removeMessagesContexts.Count() - count) < 0 ? 0 : removeMessagesContexts.Count() - count;
+            removeMessagesContexts.RemoveRange(0, v);
+            return removeMessagesContexts;
         }
     }
 }
