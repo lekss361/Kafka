@@ -1,5 +1,7 @@
+using API;
 using API.Extensions;
 using API.Model;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var kafkaConfig = new KafkaConfigModel();

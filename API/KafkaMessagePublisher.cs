@@ -13,8 +13,7 @@ namespace API
             _producerAccessor = producerAccessor ?? throw new ArgumentNullException(nameof(producerAccessor));
         }
 
-        public Task<DeliveryResult<byte[], byte[]>> PublishMessageAsync<T>(T message, string topic,
-            IEnumerable<KeyValuePair<string, string>>? messageHeaders = null)
+        public Task<DeliveryResult<byte[], byte[]>> PublishMessageAsync<T>(T message, string topic)
        where T : class
         {
             var producer = _producerAccessor.GetProducer(topic);
