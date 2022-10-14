@@ -2,7 +2,7 @@
 using Confluent.Kafka;
 using KafkaFlow.Producers;
 
-namespace API;
+namespace API.Extensions;
 
 public class KafkaMessagePublisher : IKafkaMessagePublisher
 {

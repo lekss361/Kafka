@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using API.Model;
+using API.Extensions;
 
 namespace API.Controllers;
 
