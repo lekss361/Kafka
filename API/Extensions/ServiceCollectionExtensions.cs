@@ -54,7 +54,7 @@ public static class ServiceCollectionExtensions
                                 .AddMiddlewares(
                                     middlewares => middlewares
                                         .AddSerializer<ProtobufNetSerializer>()
-                                        .AddTypedHandlers(h => h.AddHandler<PrintDebugHandler>()
+                                        .AddTypedHandlers(h => h.AddHandler<ConsumMessagesHandler>()
                                         )
                                 )
                         )

@@ -1,15 +1,14 @@
 ﻿using KafkaFlow;
 using System.Diagnostics;
 using KafkaFlow.TypedHandler;
-using KafkaFlow.Consumers;
 
 namespace API
 {
-    public class PrintDebugHandler: IMessageHandler<string>
+    public class ConsumMessagesHandler: IMessageHandler<string>
     {
         public Task Handle(IMessageContext context, string message)
         {
-            MassagesKafka.messagesContexts.Add(context.ConsumerContext);
+            ConsumMassagesKafka.messagesContexts.Add(new Model.OutKafkaMessageModel(context.ConsumerContext.Offset, message));
 
             Debug.WriteLine(
                 "Partition: {0} | Offset: {1} | Message: {2}",
