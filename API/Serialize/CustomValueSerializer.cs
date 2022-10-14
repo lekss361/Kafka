@@ -1,9 +1,5 @@
-﻿using API.Model;
-using System.Text.Json;
-using ProtoBuf;
+﻿using ProtoBuf;
 using KafkaFlow;
-using Confluent.Kafka;
-using ProtoBuf;
 
 namespace API.Serialize;
 

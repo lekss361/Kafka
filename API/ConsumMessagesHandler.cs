@@ -8,7 +8,7 @@ namespace API
     {
         public Task Handle(IMessageContext context, string message)
         {
-            ConsumMassagesKafka.messagesContexts.Add(new Model.OutKafkaMessageModel(context.ConsumerContext.Offset, message));
+            ConsumMassagesKafka.messagesContexts.Add(new Model.ResponseKafkaMessagesModel(context.ConsumerContext.Offset, message));
 
             Debug.WriteLine(
                 "Partition: {0} | Offset: {1} | Message: {2}",

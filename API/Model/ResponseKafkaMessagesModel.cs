@@ -1,8 +1,8 @@
 ﻿namespace API.Model
 {
-    public class OutKafkaMessageModel
+    public class ResponseKafkaMessagesModel
     {
-        public OutKafkaMessageModel(long offset, string message)
+        public ResponseKafkaMessagesModel(long offset, string message)
         {
             Offset = offset;
             Message = message;

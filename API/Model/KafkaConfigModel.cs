@@ -1,7 +1,5 @@
-﻿
-using Confluent.Kafka;
+﻿using Confluent.Kafka;
 using KafkaFlow.Configuration;
-using Microsoft.Extensions.Configuration;
 
 namespace API.Model;
 

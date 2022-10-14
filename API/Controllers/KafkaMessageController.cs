@@ -23,7 +23,7 @@ public class KafkaMessageController : ControllerBase
     }
 
     [HttpGet("GetMessages")]
-    public async Task<ActionResult<List<OutKafkaMessageModel>>> GetMessages( string topicName = "sample-topic", int printLastMessages= 5)
+    public async Task<ActionResult<List<ResponseKafkaMessagesModel>>> GetMessages( string topicName = "sample-topic", int printLastMessages= 5)
     {
         return Ok(ConsumMassagesKafka.PrintLastMessages(printLastMessages));
     }

@@ -1,6 +1,5 @@
 ﻿using KafkaFlow;
 using System.Diagnostics;
-using System.Text;
 
 namespace API.Extensions
 {

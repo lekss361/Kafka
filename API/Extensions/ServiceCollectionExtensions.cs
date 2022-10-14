@@ -1,18 +1,12 @@
-﻿
-using KafkaFlow;
-using KafkaFlow.Serializer;
-using KafkaFlow.Configuration;
+﻿using KafkaFlow;
 using KafkaFlow.TypedHandler;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using API.Serialize;
-using ProtoBuf.Meta;
 using API.Model;
 
 namespace API.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-
     public static IServiceCollection AddKafkaConsumerService(this IServiceCollection services) => services.AddHostedService<KafkaConsumerHostedService>();
 
     public static IServiceCollection AddKafkaPublisher(this IServiceCollection services)
