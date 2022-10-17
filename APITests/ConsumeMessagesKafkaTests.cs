@@ -26,7 +26,7 @@ public class ConsumeMessagesKafkaTests
 
     [Theory]
     [InlineData(-1)]
-    public async Task PrintLastMessages_Should( int CountPrintData)
+    public async Task PrintLastMessages_ShouldArgumentOutOfRangeException( int CountPrintData)
     {
         //Arrange
         var expected = "Specified argument was out of the range of valid values. (Parameter 'Count<0')";

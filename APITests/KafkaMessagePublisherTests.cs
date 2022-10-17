@@ -10,7 +10,25 @@ namespace APITests
         private MessagePublisherService _kafkaMessagePublisher;
 
         [Fact]
-        public void GetMessagesTests_Arg()
+        public void PublishMessageAsync_ShouldPublishMessage()
+        {
+            //Arrange
+            _producerAccessorMock = new Mock<IProducerAccessor>();
+            _kafkaMessagePublisher = new MessagePublisherService(_producerAccessorMock.Object);
+            string topic = "sample-topic";
+            _producerAccessorMock.Setup(p => p.GetProducer(topic).ProduceAsync(topic,null, topic, null)).ReturnsAsync(new Confluent.Kafka.DeliveryResult<byte[], byte[]>());
+            var expected = "Value cannot be null. (Parameter 'no topic for System.Func`1[System.String]')";
+
+            //Act
+            var actual =  _kafkaMessagePublisher.PublishMessageAsync(It.IsAny<string>, topic);
+
+            //Assert
+            _producerAccessorMock.Verify(p=>p.GetProducer(topic), Times.Once());
+
+        }
+
+        [Fact]
+        public void PublishMessageAsync_TopicNotFound_ShouldArgumentNullException()
         {
             //Arrange
             _producerAccessorMock = new Mock<IProducerAccessor>();
@@ -28,7 +46,7 @@ namespace APITests
         }
         
         [Fact]
-        public void GetMessagesTests_ShouldListsMessages()
+        public void PublishMessageAsync_ProducerNotFound_ShouldArgumentNullException()
         {
             //Arrange
             _producerAccessorMock = new Mock<IProducerAccessor>();
