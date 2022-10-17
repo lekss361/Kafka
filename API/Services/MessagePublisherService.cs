@@ -1,14 +1,15 @@
 ﻿using API.Model;
 using Confluent.Kafka;
 using KafkaFlow.Producers;
+using Newtonsoft.Json;
 
-namespace API.Extensions;
+namespace API.Services;
 
-public class KafkaMessagePublisher : IKafkaMessagePublisher
+public class MessagePublisherService : IMessagePublisherService
 {
     private readonly IProducerAccessor _producerAccessor;
 
-    public KafkaMessagePublisher(IProducerAccessor producerAccessor)
+    public MessagePublisherService(IProducerAccessor producerAccessor)
     {
         _producerAccessor = producerAccessor ?? throw new ArgumentNullException(nameof(producerAccessor));
     }
@@ -24,7 +25,7 @@ public class KafkaMessagePublisher : IKafkaMessagePublisher
 
         if (producer == null)
             throw new ArgumentNullException($"no producer for {typeof(T)}");
-
-        return producer.ProduceAsync(topic, message.ToString());
+        var result = producer.ProduceAsync(topic, message.ToString());
+        return result;
     }
 }

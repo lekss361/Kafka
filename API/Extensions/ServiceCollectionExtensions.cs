@@ -2,6 +2,7 @@
 using KafkaFlow.TypedHandler;
 using API.Serialize;
 using API.Model;
+using API.Services;
 
 namespace API.Extensions;
 
@@ -10,7 +11,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddKafkaConsumerService(this IServiceCollection services) => services.AddHostedService<KafkaConsumerHostedService>();
 
     public static IServiceCollection AddKafkaPublisher(this IServiceCollection services)
-        => services.AddSingleton<IKafkaMessagePublisher, KafkaMessagePublisher>();
+        => services.AddSingleton<IMessagePublisherService, MessagePublisherService>();
 
     public static IServiceCollection AddKafkaServices(this IServiceCollection services, KafkaConfigModel kafkaConfigModel)
     {
@@ -36,7 +37,7 @@ public static class ServiceCollectionExtensions
                             producerName,
                             producer => producer
                                 .DefaultTopic(topicName)
-                                .AddMiddlewares(m => m.AddSerializer<ProtobufNetSerializer>())
+                                .AddMiddlewares(m => m.AddSerializer<CustomSerializer>())
                         )
                         .AddConsumer(
                             consumer => consumer
@@ -47,7 +48,7 @@ public static class ServiceCollectionExtensions
                                 .WithWorkersCount(20)
                                 .AddMiddlewares(
                                     middlewares => middlewares
-                                        .AddSerializer<ProtobufNetSerializer>()
+                                        .AddSerializer<CustomSerializer>()
                                         .AddTypedHandlers(h => h.AddHandler<ConsumMessagesHandler>()
                                         )
                                 )

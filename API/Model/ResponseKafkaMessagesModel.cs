@@ -10,5 +10,12 @@
 
         public long Offset { get; set; }
         public string Message { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is ResponseKafkaMessagesModel model &&
+                   Offset == model.Offset &&
+                   Message == model.Message;
+        }
     }
 }

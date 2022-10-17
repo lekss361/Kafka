@@ -1,9 +1,9 @@
 ﻿using KafkaFlow;
 using System.Diagnostics;
 
-namespace API.Extensions
+namespace API.Services
 {
-    internal class KafkaConsumerHostedService:BackgroundService
+    internal class KafkaConsumerHostedService : BackgroundService
     {
         private readonly IServiceProvider _services;
         private IKafkaBus? _kafkaBus;
@@ -28,7 +28,7 @@ namespace API.Extensions
             }
             catch (Exception e)
             {
-                Debug.WriteLine( "Error has occurred while starting kafka consumer: {msg}", e.Message);
+                Debug.WriteLine("Error has occurred while starting kafka consumer: {msg}", e.Message);
                 throw;
             }
         }

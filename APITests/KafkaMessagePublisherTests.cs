@@ -1,4 +1,4 @@
-using API.Extensions;
+using API.Services;
 using KafkaFlow.Producers;
 using Moq;
 
@@ -7,16 +7,14 @@ namespace APITests
     public class KafkaMessagePublisherTests
     {
         private Mock<IProducerAccessor> _producerAccessorMock;
-        private KafkaMessagePublisher _kafkaMessagePublisher;
-
-
+        private MessagePublisherService _kafkaMessagePublisher;
 
         [Fact]
         public void GetMessagesTests_Arg()
         {
             //Arrange
             _producerAccessorMock = new Mock<IProducerAccessor>();
-            _kafkaMessagePublisher = new KafkaMessagePublisher(_producerAccessorMock.Object);
+            _kafkaMessagePublisher = new MessagePublisherService(_producerAccessorMock.Object);
             string topic = null;
             var expected = "Value cannot be null. (Parameter 'no topic for System.Func`1[System.String]')";
 
@@ -34,7 +32,7 @@ namespace APITests
         {
             //Arrange
             _producerAccessorMock = new Mock<IProducerAccessor>();
-            _kafkaMessagePublisher = new KafkaMessagePublisher(_producerAccessorMock.Object);
+            _kafkaMessagePublisher = new MessagePublisherService(_producerAccessorMock.Object);
             string topic = "";
             var expected = "Value cannot be null. (Parameter 'no producer for System.Func`1[System.String]')";
 

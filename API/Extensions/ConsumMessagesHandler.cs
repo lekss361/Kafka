@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using KafkaFlow.TypedHandler;
 
-namespace API
+namespace API.Extensions
 {
-    public class ConsumMessagesHandler: IMessageHandler<string>
+    public class ConsumMessagesHandler : IMessageHandler<string>
     {
         public Task Handle(IMessageContext context, string message)
         {
