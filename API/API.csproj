@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="6.0.5" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="6.0.5" />
     <PackageReference Include="KafkaFlow" Version="2.2.8" />
     <PackageReference Include="KafkaFlow.LogHandler.Console" Version="2.2.8" />
     <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="2.2.8" />

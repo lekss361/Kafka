@@ -32,4 +32,10 @@ public class KafkaMessageController : ControllerBase
     {
         return Ok( ConsumMassagesKafka.PrintLastMessages(printLastMessages).Result);
     }
+
+    [HttpGet("/healthz")]
+    public async Task<ActionResult<List<ResponseKafkaMessagesModel>>> Healthz()
+    {
+        return Ok();
+    }
 }
