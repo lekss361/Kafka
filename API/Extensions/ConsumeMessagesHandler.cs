@@ -4,11 +4,11 @@ using KafkaFlow.TypedHandler;
 
 namespace API.Extensions
 {
-    public class ConsumMessagesHandler : IMessageHandler<string>
+    public class ConsumeMessagesHandler : IMessageHandler<string>
     {
         public Task Handle(IMessageContext context, string message)
         {
-            ConsumMassagesKafka.messagesContexts.Add(new Model.ResponseKafkaMessagesModel(context.ConsumerContext.Offset, message));
+            GlobalVariables.responseKafkaMessages.Add(new Model.ResponseKafkaMessagesModel(context.ConsumerContext.Offset, message));
 
             Debug.WriteLine(
                 "Partition: {0} | Offset: {1} | Message: {2}",

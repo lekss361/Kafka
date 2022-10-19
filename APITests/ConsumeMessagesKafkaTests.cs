@@ -13,15 +13,15 @@ public class ConsumeMessagesKafkaTests
         //Arrange
         for (int i = 0; i < ArrangeDataList; i++)
         {
-        ConsumMassagesKafka.messagesContexts.Add(new ResponseKafkaMessagesModel(i,$"{i}" ));
+        ConsumeMassagesKafka.messagesContexts.Add(new ResponseKafkaMessagesModel(i,$"{i}" ));
         }
 
         //Act
-        var actual = ConsumMassagesKafka.PrintLastMessages(CountPrintData);
+        var actual = ConsumeMassagesKafka.PrintLastMessages(CountPrintData);
 
         //Assert
         Assert.Equal(expected, actual.Result);
-        ConsumMassagesKafka.messagesContexts.Clear();
+        ConsumeMassagesKafka.messagesContexts.Clear();
     }
 
     [Theory]
@@ -32,7 +32,7 @@ public class ConsumeMessagesKafkaTests
         var expected = "Specified argument was out of the range of valid values. (Parameter 'Count<0')";
 
         //Act
-        var actual = Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await ConsumMassagesKafka.PrintLastMessages(CountPrintData));
+        var actual = Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await ConsumeMassagesKafka.PrintLastMessages(CountPrintData));
 
         //Assert
         Assert.Equal(expected, actual.Result.Message);

@@ -10,19 +10,19 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class KafkaMessageController : ControllerBase
 {
-    private readonly IMessagePublisherService publisher;
-    private readonly CustomSerializer customSerializer;
+    private readonly IMessagePublisherService _publisher;
+    private ConsumeMassagesKafka _consumeMassagesKafka;
 
-    public KafkaMessageController(IMessagePublisherService publisher, CustomSerializer customSerializer)
+    public KafkaMessageController(IMessagePublisherService publisher, ConsumeMassagesKafka consumeMassagesKafka)
     {
-        this.publisher = publisher;
-        this.customSerializer = customSerializer;
+        _publisher = publisher;
+        _consumeMassagesKafka = consumeMassagesKafka;
     }
 
     [HttpPut("AddMessage")]
     public async Task<ActionResult> AddMessage([FromBody] Object message, string topicName = "sample-topic")
     {
-        var result = await publisher.PublishMessageAsync(message, topicName);
+        var result = await _publisher.PublishMessageAsync(message, topicName);
         return Ok(result);    
         
     }
@@ -30,12 +30,6 @@ public class KafkaMessageController : ControllerBase
     [HttpGet("GetMessages")]
     public async Task<ActionResult<List<ResponseKafkaMessagesModel>>> GetMessages( string topicName = "sample-topic", int printLastMessages= 5)
     {
-        return Ok( ConsumMassagesKafka.PrintLastMessages(printLastMessages).Result);
-    }
-
-    [HttpGet("/healthz")]
-    public async Task<ActionResult<List<ResponseKafkaMessagesModel>>> Healthz()
-    {
-        return Ok();
+        return Ok(await _consumeMassagesKafka.PrintLastMessages(printLastMessages));
     }
 }

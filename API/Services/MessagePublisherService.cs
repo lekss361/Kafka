@@ -18,10 +18,6 @@ public class MessagePublisherService : IMessagePublisherService
     public Task<DeliveryResult<byte[], byte[]>> PublishMessageAsync<T>(T message, string topic)
    where T : class
     {
-
-        if (topic == null)
-            throw new ArgumentNullException($"no topic for {typeof(T)}");
-
         var producer = _producerAccessor.GetProducer(topic);
 
         if (producer == null)

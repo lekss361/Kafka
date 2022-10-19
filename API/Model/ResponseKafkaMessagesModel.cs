@@ -17,5 +17,10 @@
                    Offset == model.Offset &&
                    Message == model.Message;
         }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Offset, Message);
+        }
     }
 }

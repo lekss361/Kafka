@@ -17,9 +17,9 @@ public class SampleHealthCheck : IHealthCheck
 
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
-        var c = _producer.All;
-        bool isHealthy = c.Count() > 1 ? true : false;
-        publisher.PublishMessageAsync("healthy", "debug");
+        var allProduce = _producer.All;
+        bool isHealthy = allProduce.Count() > 1;
+        await publisher.PublishMessageAsync("healthy", "debug");
 
         return isHealthy ? HealthCheckResult.Healthy("healthy") : HealthCheckResult.Unhealthy("error");
     }

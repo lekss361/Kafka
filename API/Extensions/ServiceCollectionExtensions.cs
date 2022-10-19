@@ -55,7 +55,7 @@ public static class ServiceCollectionExtensions
                                 .AddMiddlewares(
                                     middlewares => middlewares
                                         .AddSerializer<CustomSerializer>()
-                                        .AddTypedHandlers(h => h.AddHandler<ConsumMessagesHandler>()
+                                        .AddTypedHandlers(h => h.AddHandler<ConsumeMessagesHandler>()
                                         )
                                 )
                         )

@@ -26,24 +26,6 @@ namespace APITests
             _producerAccessorMock.Verify(p=>p.GetProducer(topic), Times.Once());
 
         }
-
-        [Fact]
-        public void PublishMessageAsync_TopicNotFound_ShouldArgumentNullException()
-        {
-            //Arrange
-            _producerAccessorMock = new Mock<IProducerAccessor>();
-            _kafkaMessagePublisher = new MessagePublisherService(_producerAccessorMock.Object);
-            string topic = null;
-            var expected = "Value cannot be null. (Parameter 'no topic for System.Func`1[System.String]')";
-
-            //Act
-            var actual = Assert.ThrowsAsync<ArgumentNullException>(async () => await _kafkaMessagePublisher.PublishMessageAsync(It.IsAny<string>, topic));
-
-
-            //Assert
-            Assert.Equal(expected, actual.Result.Message);
-
-        }
         
         [Fact]
         public void PublishMessageAsync_ProducerNotFound_ShouldArgumentNullException()

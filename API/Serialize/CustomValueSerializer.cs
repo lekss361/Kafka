@@ -20,9 +20,9 @@ public class CustomSerializer : ISerializer
         return Task.FromResult(Serializer.Deserialize(type, input));
     }
 
-    public async Task<string> JsonConvertSerilize(object data)
+    public Task<string> JsonConvertSerilize(object data)
     {
-       var result=  JsonConvert.SerializeObject(data, Formatting.Indented);
-        return result;
+         var result =   JsonConvert.SerializeObject(data, Formatting.Indented);
+        return Task.FromResult(result);
     }
 }
