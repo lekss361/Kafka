@@ -39,13 +39,19 @@ public static class ServiceCollectionExtensions
                                 .DefaultTopic(topicName)
                                 .AddMiddlewares(m => m.AddSerializer<CustomSerializer>())
                         )
+                        .AddProducer(
+                            "debug",
+                            producer => producer
+                                .DefaultTopic("debug")
+                                .AddMiddlewares(m => m.AddSerializer<CustomSerializer>())
+                                )
                         .AddConsumer(
                             consumer => consumer
                                 .Topic(topicName)
                                 .WithConsumerConfig(kafkaConfigModel.ConsumerConfig)
                                 .WithName(topicName)
-                                .WithBufferSize(100)
-                                .WithWorkersCount(20)
+                                .WithWorkersCount(2)
+                                .WithBufferSize(10)
                                 .AddMiddlewares(
                                     middlewares => middlewares
                                         .AddSerializer<CustomSerializer>()

@@ -17,6 +17,7 @@ builder.Services.AddKafkaPublisher();
 builder.Services.AddHealthChecks().AddCheck<SampleHealthCheck>(nameof(SampleHealthCheck));
 builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 
+
    
 
 var app = builder.Build(); 
@@ -29,7 +30,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
-//app.MapHealthChecks("/health");
 app.MapHealthChecks("/health", new HealthCheckOptions()
 {
     ResponseWriter=UIResponseWriter.WriteHealthCheckUIResponse

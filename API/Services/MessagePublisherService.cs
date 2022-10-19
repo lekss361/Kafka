@@ -29,9 +29,4 @@ public class MessagePublisherService : IMessagePublisherService
         var result = producer.ProduceAsync(topic, message.ToString());
         return result;
     }
-    public async Task<IEnumerable<IMessageProducer>> GetAllConfigureProduce()
-    {
-        return _producerAccessor.All;
-    }
-
 }

@@ -1,4 +1,5 @@
 ﻿using API.Services;
+using KafkaFlow.Producers;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace API.HealthCheck;
@@ -6,21 +7,20 @@ namespace API.HealthCheck;
 public class SampleHealthCheck : IHealthCheck
 {
     private readonly IMessagePublisherService publisher;
+    private readonly IProducerAccessor _producer;
 
-    public SampleHealthCheck(IMessagePublisherService publisher)
+    public SampleHealthCheck(IMessagePublisherService publisher, IProducerAccessor producer)
     {
         this.publisher = publisher;
+        _producer = producer;
     }
 
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
-        bool isHealthy = await IDataBaseConnectAsync();
-        var x = publisher.PublishMessageAsync("","");
-        return isHealthy? HealthCheckResult.Healthy("conn"):HealthCheckResult.Unhealthy("error");
-    }
+        var c = _producer.All;
+        bool isHealthy = c.Count() > 1 ? true : false;
+        publisher.PublishMessageAsync("healthy", "debug");
 
-    private Task<bool> IDataBaseConnectAsync()
-    {
-        return Task.FromResult(true);
+        return isHealthy ? HealthCheckResult.Healthy("healthy") : HealthCheckResult.Unhealthy("error");
     }
 }
