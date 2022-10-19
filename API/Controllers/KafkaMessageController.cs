@@ -11,9 +11,9 @@ namespace API.Controllers;
 public class KafkaMessageController : ControllerBase
 {
     private readonly IMessagePublisherService _publisher;
-    private ConsumeMassagesKafka _consumeMassagesKafka;
+    private IConsumeMassagesKafka _consumeMassagesKafka;
 
-    public KafkaMessageController(IMessagePublisherService publisher, ConsumeMassagesKafka consumeMassagesKafka)
+    public KafkaMessageController(IMessagePublisherService publisher, IConsumeMassagesKafka consumeMassagesKafka)
     {
         _publisher = publisher;
         _consumeMassagesKafka = consumeMassagesKafka;

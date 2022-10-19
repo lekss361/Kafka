@@ -12,6 +12,11 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddKafkaPublisher(this IServiceCollection services)
         => services.AddSingleton<IMessagePublisherService, MessagePublisherService>();
+    
+    public static IServiceCollection AddKafkaConsumerList(this IServiceCollection services)
+        => services.AddScoped<IConsumeMassagesKafka, ConsumeMassagesKafka>();
+
+    
 
     public static IServiceCollection AddKafkaServices(this IServiceCollection services, KafkaConfigModel kafkaConfigModel)
     {

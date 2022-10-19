@@ -14,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddKafkaServices(kafkaConfig);
 builder.Services.AddKafkaPublisher();
+builder.Services.AddKafkaConsumerList();
 builder.Services.AddHealthChecks().AddCheck<SampleHealthCheck>(nameof(SampleHealthCheck));
 builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 

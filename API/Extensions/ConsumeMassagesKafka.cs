@@ -1,20 +1,19 @@
 ﻿using API.Model;
 using API.Serialize;
-using Newtonsoft.Json;
 
 namespace API.Extensions;
 
-public class ConsumeMassagesKafka
+public class ConsumeMassagesKafka : IConsumeMassagesKafka
 {
     private readonly object ReadWriteLock = new();
 
-    public  Task<string> PrintLastMessages(int count)
+    public Task<string> PrintLastMessages(int count)
     {
         List<ResponseKafkaMessagesModel> removeMessages = new List<ResponseKafkaMessagesModel>();
         if (count < 0)
             throw new ArgumentOutOfRangeException("Count<0");
 
-            CustomSerializer serializer = new CustomSerializer();
+        CustomSerializer serializer = new CustomSerializer();
 
         lock (ReadWriteLock)
         {
