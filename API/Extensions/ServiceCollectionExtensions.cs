@@ -23,7 +23,6 @@ public static class ServiceCollectionExtensions
         {
             loggingBuilder.ClearProviders();
             loggingBuilder.SetMinimumLevel(LogLevel.Debug);
-            loggingBuilder.AddNLog(config);
         });
     }
 

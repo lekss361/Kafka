@@ -11,17 +11,21 @@ namespace API.Controllers;
 public class KafkaMessageController : ControllerBase
 {
     private readonly IMessagePublisherService _publisher;
+    private readonly ILogger<KafkaMessageController> _logger;
     private IConsumeMassagesKafka _consumeMassagesKafka;
 
-    public KafkaMessageController(IMessagePublisherService publisher, IConsumeMassagesKafka consumeMassagesKafka)
+    public KafkaMessageController(IMessagePublisherService publisher, ILogger<KafkaMessageController> logger, IConsumeMassagesKafka consumeMassagesKafka)
     {
         _publisher = publisher;
         _consumeMassagesKafka = consumeMassagesKafka;
+        _logger = logger;
+        _logger.LogDebug(1, "NLog injected into HomeController");
     }
 
     [HttpPut("AddMessage")]
     public async Task<ActionResult> AddMessage([FromBody] Object message, string topicName = "sample-topic")
     {
+        _logger.LogInformation("Hello, this is the index!");
         var result = await _publisher.PublishMessageAsync(message, topicName);
         return Ok(result);    
         
