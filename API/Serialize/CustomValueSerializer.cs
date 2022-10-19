@@ -22,7 +22,8 @@ public class CustomSerializer : ISerializer
 
     public Task<string> JsonConvertSerilize(object data)
     {
-         var result =   JsonConvert.SerializeObject(data, Formatting.Indented);
+        var result = JsonConvert.SerializeObject(data, Formatting.Indented);
+
         return Task.FromResult(result);
     }
 }

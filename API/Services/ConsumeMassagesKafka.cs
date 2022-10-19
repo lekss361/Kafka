@@ -13,7 +13,7 @@ public class ConsumeMassagesKafka : IConsumeMassagesKafka
         if (count < 0)
             throw new ArgumentOutOfRangeException("Count<0");
 
-        CustomSerializer serializer = new CustomSerializer();
+        CustomSerializer serializer = new();
 
         lock (ReadWriteLock)
         {

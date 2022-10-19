@@ -16,7 +16,16 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddKafkaConsumerList(this IServiceCollection services)
         => services.AddScoped<IConsumeMassagesKafka, ConsumeMassagesKafka>();
 
-    
+    public static void RegisterLogger(this IServiceCollection service, IConfiguration config)
+    {
+        service.Configure<ConsoleLifetimeOptions>(opts => opts.SuppressStatusMessages = true);
+        service.AddLogging(loggingBuilder =>
+        {
+            loggingBuilder.ClearProviders();
+            loggingBuilder.SetMinimumLevel(LogLevel.Debug);
+            loggingBuilder.AddNLog(config);
+        });
+    }
 
     public static IServiceCollection AddKafkaServices(this IServiceCollection services, KafkaConfigModel kafkaConfigModel)
     {
