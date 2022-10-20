@@ -13,9 +13,6 @@ builder.Configuration.Bind("services:kafka", kafkaConfig);
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
-try
-{
-
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
 
@@ -51,15 +48,3 @@ try
     app.MapHealthChecksUI();
 
     app.Run();
-}
-catch(Exception exception)
-{
-    // NLog: catch setup errors
-    logger.Error(exception, "Stopped program because of exception");
-    throw;
-}
-finally
-{
-    // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
-    LogManager.Shutdown();
-}
