@@ -22,8 +22,8 @@ logger.Debug("init main");
     builder.Services.AddKafkaServices(kafkaConfig);
     builder.Services.AddKafkaPublisher();
     builder.Services.AddKafkaConsumerList();
-    builder.Services.AddHealthChecks().AddCheck<SampleHealthCheck>(nameof(SampleHealthCheck));
-    builder.Services.AddHealthChecksUI().AddInMemoryStorage();
+    //builder.Services.AddHealthChecks().AddCheck<SampleHealthCheck>(nameof(SampleHealthCheck));
+    //builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 
 
 
@@ -41,10 +41,10 @@ logger.Debug("init main");
     }
 
     app.MapControllers();
-    app.MapHealthChecks("/health", new HealthCheckOptions()
-    {
-        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-    });
+    //app.MapHealthChecks("/health", new HealthCheckOptions()
+    //{
+    //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    //});
     app.MapHealthChecksUI();
 
     app.Run();
