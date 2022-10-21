@@ -1,4 +1,5 @@
 ﻿using API.Services;
+using KafkaFlow.Consumers;
 using KafkaFlow.Producers;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
@@ -6,20 +7,28 @@ namespace API.HealthCheck;
 
 public class SampleHealthCheck : IHealthCheck
 {
-    private readonly IMessagePublisherService publisher;
-    private readonly IProducerAccessor _producer;
+    private readonly IConsumerAccessor _consumer;
+    private readonly IMessagePublisherService _publisherService;
 
-    public SampleHealthCheck(IMessagePublisherService publisher, IProducerAccessor producer)
+    public SampleHealthCheck(IConsumerAccessor consumer, IMessagePublisherService publisherService)
     {
-        this.publisher = publisher;
-        _producer = producer;
+        _consumer = consumer;
+        _publisherService = publisherService;
     }
 
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
-        var allProduce = _producer.All;
-        bool isHealthy = allProduce.Count() > 1;
-        //var c= await publisher.PublishMessageAsync("healthy", "debug");
+        bool isHealthy=true;
+        var allConsumer = _consumer.All;
+        _publisherService.PublishMessageAsync("", "sample-topi");
+        foreach (var item in allConsumer)
+        {
+            if (item.MemberId == "")
+            {
+                isHealthy = false;
+                break;
+            }
+        }
 
         return isHealthy ? HealthCheckResult.Healthy("healthy") : HealthCheckResult.Unhealthy("error");
     }

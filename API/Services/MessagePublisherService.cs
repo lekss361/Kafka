@@ -1,8 +1,6 @@
 ﻿using API.Model;
 using Confluent.Kafka;
 using KafkaFlow;
-using KafkaFlow.Admin.Messages;
-using KafkaFlow.Admin;
 using KafkaFlow.Producers;
 using Newtonsoft.Json;
 
@@ -23,13 +21,13 @@ public class MessagePublisherService : IMessagePublisherService
    where T : class
     {
 
-        _logger.LogDebug($"topic:{topic}");
+        _logger.LogDebug($"ProduceToTopic:{topic}");
 
         var producer = _producerAccessor.GetProducer(topic);
 
         if (producer == null)
             throw new ArgumentNullException($"no producer for {typeof(T)}");
-        var result = producer.ProduceAsync(topic, message.ToString());
+        var result = producer.ProduceAsync(Guid.NewGuid().ToString(), message.ToString());
         return result;
     }
 }

@@ -3,6 +3,13 @@ using API.Model;
 using API.Serialize;
 using API.Services;
 using API.Extensions;
+using System.Net;
+using System;
+using System.Diagnostics;
+using Microsoft.Rest;
+using Newtonsoft.Json;
+using Org.BouncyCastle.Ocsp;
+using System.Text;
 
 namespace API.Controllers;
 
@@ -19,24 +26,28 @@ public class KafkaMessageController : ControllerBase
         _publisher = publisher;
         _consumeMassagesKafka = consumeMassagesKafka;
         _logger = logger;
-        _logger.LogDebug(1, "NLog injected into KafkaMessageController");
     }
 
     [HttpPut("AddMessage")]
     public async Task<ActionResult> AddMessage([FromBody] Object message, string topicName = "sample-topic")
     {
-
-
-        _logger.LogInformation("Hello, this is the index!");
+        _logger.LogInformation($"Headers:{JsonConvert.SerializeObject(HttpContext.Request.Headers, Formatting.Indented)}");
+       
         var result = await _publisher.PublishMessageAsync(message, topicName);
-        _logger.LogInformation(result.Offset.ToString());
-        return Ok(result);    
-        
+       
+        _logger.LogInformation($"Response: Offset:{result.Offset} KeyMessage:{Encoding.UTF8.GetString(result.Key, 0, result.Key.Length - 1)} " +
+            $"Response Endpoint: {JsonConvert.SerializeObject(result,Formatting.Indented)}");
+        return Ok(result);
     }
 
     [HttpGet("GetMessages")]
     public async Task<ActionResult<List<ResponseKafkaMessagesModel>>> GetMessages( string topicName = "sample-topic", int printLastMessages= 5)
     {
-        return Ok(await _consumeMassagesKafka.PrintLastMessages(printLastMessages));
+        _logger.LogInformation($"Headers:{JsonConvert.SerializeObject(HttpContext.Request.Headers, Formatting.Indented)}");
+
+        var result = await _consumeMassagesKafka.PrintLastMessages(printLastMessages);
+
+        _logger.LogInformation($"Response Endpoint: {JsonConvert.SerializeObject(result, Formatting.Indented)}");
+        return Ok(result);
     }
 }

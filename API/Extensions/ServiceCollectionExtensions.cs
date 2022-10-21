@@ -3,8 +3,6 @@ using KafkaFlow.TypedHandler;
 using API.Serialize;
 using API.Model;
 using API.Services;
-using KafkaFlow.Admin;
-using Confluent.Kafka;
 
 namespace API.Extensions;
 
@@ -30,16 +28,10 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddKafkaServices(this IServiceCollection services, KafkaConfigModel kafkaConfigModel)
     {
-        
         const string producerName = "sample-topic";
-        const string producerName2 = "debug";
-        const string topicName = "sample-topiz";
-        ConsumerConfig keyValuePairs = new(kafkaConfigModel.ConsumerConfig);
-        keyValuePairs.AllowAutoCreateTopics = true;
-        foreach (var item in kafkaConfigModel.ProducerConfigs)
-        {
-            keyValuePairs.Set(item.Key, item.Value);
-        }
+        const string producerName2 = "sample-topi";
+        const string topicName = "sample-topic";
+        
         services.AddKafkaConsumerService();
         services.AddKafka(
             kafka => kafka
@@ -47,7 +39,6 @@ public static class ServiceCollectionExtensions
                 .AddCluster(
                     cluster => cluster
                         .WithBrokers(kafkaConfigModel.Brokers)
-                        .EnableTelemetry("kafka-flow.admin")
 
                         .WithSecurityInformation(si =>
                         {
@@ -59,47 +50,30 @@ public static class ServiceCollectionExtensions
                         })
                         .AddConsumer(
                             consumer => consumer
-                                .WithConsumerConfig(keyValuePairs)
                                 .Topic(topicName)
                                 .WithName(topicName)
-                                .WithWorkersCount(20)
-                                .WithBufferSize(100)
+                                .WithWorkersCount(2)
+                                .WithBufferSize(1)
+                                .WithGroupId(topicName)
                                 .AddMiddlewares(
                                     middlewares => middlewares
                                         .AddSerializer<CustomSerializer>()
                                         .AddTypedHandlers(h => h.AddHandler<ConsumeMessagesHandler>()
                                         )
                                 )
-                        )
-                        .AddConsumer(
-                            consumer => consumer
-                                .WithConsumerConfig(keyValuePairs)
-                                .Topic(producerName2)
-                                .WithName(producerName2)
-                                .WithWorkersCount(20)
-                                .WithBufferSize(100)
-                                .AddMiddlewares(
-                                    middlewares => middlewares
-                                        .AddSerializer<CustomSerializer>()
-                                        .AddTypedHandlers(h => h.AddHandler<ConsumeMessagesHandler>()
-                                        )
-                                )
-                        )
+                        )                        
                         .AddProducer(
                             producerName,
                             producer => producer
                                 .DefaultTopic(producerName)
-                                .AddMiddlewares(m => m.AddSerializer<CustomSerializer>().Add<ErrorHandlingMiddleware>())
+                                .AddMiddlewares(m => m.AddSerializer<CustomSerializer>())
                         )
                         .AddProducer(
                             producerName2,
                             producer => producer
-                                //.WithProducerConfig(keyValuePairs)
                                 .DefaultTopic(producerName2)
-                                .AddMiddlewares(middlewareBuilder => middlewareBuilder.Add<ErrorHandlingMiddleware>())
                                 .AddMiddlewares(m => m.AddSerializer<CustomSerializer>())
-
-                                )
+                        )
                         
                 )
         );
