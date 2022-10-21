@@ -1,9 +1,9 @@
+using API;
 using API.Extensions;
 using API.HealthCheck;
 using API.Model;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using NLog;
 using NLog.Web;
 
@@ -22,8 +22,8 @@ logger.Debug("init main");
     builder.Services.AddKafkaServices(kafkaConfig);
     builder.Services.AddKafkaPublisher();
     builder.Services.AddKafkaConsumerList();
-    //builder.Services.AddHealthChecks().AddCheck<SampleHealthCheck>(nameof(SampleHealthCheck));
-    //builder.Services.AddHealthChecksUI().AddInMemoryStorage();
+    builder.Services.AddHealthChecks().AddCheck<SampleHealthCheck>(nameof(SampleHealthCheck));
+    builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 
 
 
@@ -35,16 +35,15 @@ logger.Debug("init main");
     {
         app.UseSwagger();
         app.UseSwaggerUI();
-        app.UseExceptionHandler("/Home/Error");
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
+        app.UseKafkaFlowDashboard();
     }
 
     app.MapControllers();
-    //app.MapHealthChecks("/health", new HealthCheckOptions()
-    //{
-    //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-    //});
+    app.MapHealthChecks("/health", new HealthCheckOptions()
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
     app.MapHealthChecksUI();
 
     app.Run();

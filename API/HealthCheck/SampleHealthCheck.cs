@@ -19,7 +19,7 @@ public class SampleHealthCheck : IHealthCheck
     {
         var allProduce = _producer.All;
         bool isHealthy = allProduce.Count() > 1;
-        await publisher.PublishMessageAsync("healthy", "debug");
+        //var c= await publisher.PublishMessageAsync("healthy", "debug");
 
         return isHealthy ? HealthCheckResult.Healthy("healthy") : HealthCheckResult.Unhealthy("error");
     }

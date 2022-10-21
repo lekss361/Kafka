@@ -19,14 +19,17 @@ public class KafkaMessageController : ControllerBase
         _publisher = publisher;
         _consumeMassagesKafka = consumeMassagesKafka;
         _logger = logger;
-        _logger.LogDebug(1, "NLog injected into HomeController");
+        _logger.LogDebug(1, "NLog injected into KafkaMessageController");
     }
 
     [HttpPut("AddMessage")]
     public async Task<ActionResult> AddMessage([FromBody] Object message, string topicName = "sample-topic")
     {
+
+
         _logger.LogInformation("Hello, this is the index!");
         var result = await _publisher.PublishMessageAsync(message, topicName);
+        _logger.LogInformation(result.Offset.ToString());
         return Ok(result);    
         
     }
