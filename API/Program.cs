@@ -36,7 +36,6 @@ logger.Debug("init main");
         app.UseSwagger();
         app.UseSwaggerUI();
         app.UseHsts();
-        app.UseKafkaFlowDashboard();
     }
 
     app.MapControllers();
